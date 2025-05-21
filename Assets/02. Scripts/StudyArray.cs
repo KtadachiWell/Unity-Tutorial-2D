@@ -9,13 +9,9 @@ public class StudyArray : MonoBehaviour
 
     public List<int> listNumber = new List<int>();
 
-    int number1 = 1;
-    private int number2 = 2;
     public int number3 = 3;
 
-    [SerializeField]
-    private int number4 = 4;
-    [SerializeField] private int number5 = 5; // 시리얼라이즈는 데이터를 직렬화 시킨다는 명령어.
+    // 시리얼라이즈는 데이터를 직렬화 시킨다는 명령어.
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
