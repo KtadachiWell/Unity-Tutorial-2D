@@ -13,17 +13,21 @@ public class Movement : MonoBehaviour
         /// 총쏘기 -> 마우스 왼쪽
 
         // 부드럽게 증감하는 값
-        float h = Input.GetAxis("Horizontal"); // wasd랑 화살표키 움직임 둘다 작동함
-        float v = Input.GetAxis("Vertical"); // 위와 동일
+        //float h = Input.GetAxis("Horizontal"); // wasd랑 화살표키 움직임 둘다 작동함
+        //float v = Input.GetAxis("Vertical"); // 위와 동일
 
         // 딱 떨어지는 값
         float h2 = Input.GetAxisRaw("Horizontal");
         float v2 = Input.GetAxisRaw("Vertical");
 
-        Vector3 dir = new Vector3(h, 0, v);
-        Debug.Log($"현재 입력 : {dir}");
+        Vector3 dir = new Vector3(h2, 0, v2); // 이렇게하면 대각선으로 이동할 때 1,0,1 값이 들어가서 더 빠르게 이동하게 됌.
 
-        transform.position += dir * moveSpeed * Time.deltaTime;
+        Vector3 normalDir = dir.normalized; // 위의 값에서 정규화 과정을 가지게됌. ( 0 ~ 1 )
+        Debug.Log($"현재 입력 : {normalDir}");
+
+        transform.position += normalDir * moveSpeed * Time.deltaTime;
+
+        transform.LookAt(transform.position + normalDir);
     }
 }
 
