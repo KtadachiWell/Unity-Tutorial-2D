@@ -10,7 +10,7 @@ public class StudyLookAt : MonoBehaviour
     public Transform firePos; // 발사 위치
 
     public float timer;
-    public float cooldownTime;
+    public float cooldownTime = 0.4f;
 
     public void TargetLookAt()
     {
