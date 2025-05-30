@@ -7,9 +7,12 @@ public class CharacterMovement : MonoBehaviour
     Rigidbody2D characterRb;
     public float moveSpeed;
     public float jumpPower = 10f;
+    public float dashPower = 8f;
     float h;
     bool isGround;
-
+    bool isJumping;
+    public int dashCount = 0;
+    bool jumpReset;
     // public GameObject[] animObjects;
     public SpriteRenderer[] renderers;
 
@@ -29,6 +32,8 @@ public class CharacterMovement : MonoBehaviour
 
         CharacterJump();
         CharacterFlipInJump();
+        
+        
     }
 
     private void FixedUpdate()
@@ -85,9 +90,19 @@ public class CharacterMovement : MonoBehaviour
 
     void CharacterJump()
     {
-        if (Input.GetButtonDown("Jump")) // 겟키다운 스페이스바랑 같은 개념
+        if (isJumping == false)
         {
-            characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+            // if (Input.GetButtonDown("Jump")) // 겟키다운 스페이스바랑 같은 개념
+            if (Input.GetButtonDown("Vertical"))
+            {
+                characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+                isJumping = true;
+                if(jumpReset == true && isJumping == true)
+                {
+                    characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+                    jumpReset = false;
+                }
+            }
         }
     }
 
@@ -96,19 +111,41 @@ public class CharacterMovement : MonoBehaviour
         if (isGround == true)
             return;
 
-        if (isGround == false && h != 0)
+        if (isGround == false && h != 0 && isJumping == true)
         {
             if (h > 0)
             {
-                renderers[1].flipX = false; // 플립이 축 뒤집기, 즉 스프라이트에선 방향 전환임.
-                renderers[0].flipX = false; // 근데 왼쪽으로 움직이다 멈췄을 때 오른쪽 보고 서있으면 이상하니까 둘 다 값을 바꿔준다는 개념.
                 renderers[2].flipX = false;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    characterRb.AddForceX(dashPower, ForceMode2D.Force);
+                    if (dashCount < 2)
+                    {
+                        dashCount++;
+                    }
+                    else
+                    {
+                        jumpReset = true;
+                        dashCount = 0;
+                    }
+                }
             }
             else if (h < 0)
             {
-                renderers[1].flipX = true;
-                renderers[0].flipX = true;
                 renderers[2].flipX = true;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    characterRb.AddForceX(-dashPower, ForceMode2D.Force);
+                    if(dashCount < 2)
+                    {
+                        dashCount++;
+                    }
+                    else
+                    {
+                        jumpReset = true;
+                        dashCount = 0;
+                    }
+                }
             }
         }
     }
@@ -119,6 +156,8 @@ public class CharacterMovement : MonoBehaviour
         {
             isGround = true;
             renderers[2].gameObject.SetActive(false); // Jump
+            isJumping = false;
+            dashCount = 0;
         }
     }
 
