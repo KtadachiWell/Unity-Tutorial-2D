@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -12,7 +13,8 @@ public class CharacterMovement : MonoBehaviour
     bool isGround;
     bool isJumping;
     public int dashCount = 0;
-    bool jumpReset;
+    bool canExtraJump;
+    int mouseOnHit = 0;
     // public GameObject[] animObjects;
     public SpriteRenderer[] renderers;
 
@@ -97,12 +99,16 @@ public class CharacterMovement : MonoBehaviour
             {
                 characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
                 isJumping = true;
-                if(jumpReset == true && isJumping == true)
-                {
-                    characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
-                    jumpReset = false;
-                }
+                
             }
+
+        }
+        if (canExtraJump == true && isJumping == true && Input.GetButtonDown("Vertical"))
+        {
+            characterRb.linearVelocityY = 0;
+            characterRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+            canExtraJump = false;
+            dashCount = 0;
         }
     }
 
@@ -118,14 +124,14 @@ public class CharacterMovement : MonoBehaviour
                 renderers[2].flipX = false;
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    characterRb.AddForceX(dashPower, ForceMode2D.Force);
+                    characterRb.AddForceX(dashPower, ForceMode2D.Impulse);
                     if (dashCount < 2)
                     {
                         dashCount++;
                     }
                     else
                     {
-                        jumpReset = true;
+                        canExtraJump = true;
                         dashCount = 0;
                     }
                 }
@@ -135,14 +141,14 @@ public class CharacterMovement : MonoBehaviour
                 renderers[2].flipX = true;
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    characterRb.AddForceX(-dashPower, ForceMode2D.Force);
-                    if(dashCount < 2)
+                    characterRb.AddForceX(-dashPower, ForceMode2D.Impulse);
+                    if (dashCount < 2)
                     {
                         dashCount++;
                     }
                     else
                     {
-                        jumpReset = true;
+                        canExtraJump = true;
                         dashCount = 0;
                     }
                 }
@@ -158,6 +164,7 @@ public class CharacterMovement : MonoBehaviour
             renderers[2].gameObject.SetActive(false); // Jump
             isJumping = false;
             dashCount = 0;
+            canExtraJump = false;
         }
     }
 
