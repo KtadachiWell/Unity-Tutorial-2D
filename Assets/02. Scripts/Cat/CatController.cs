@@ -1,58 +1,53 @@
-using TMPro;
+using System;
 using UnityEngine;
+using Cat; // 사운드 매니저가 있는 namespace
 
 public class CatController : MonoBehaviour
 {
+    public SoundManager soundManager; // public으로 설정했기 때문에 유니티 상에서 할당 예정
 
     private Rigidbody2D catRb;
-    public float jumpPower = 8f;
-    private bool jumpLimit = false;
-    public int jumpMax;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    private Animator catAnim;
+
+    public float jumpPower = 10f;
+    public bool isGround = false;
+
+    public int jumpCount = 0;
+
+    void Start()
     {
         catRb = GetComponent<Rigidbody2D>();
-        jumpMax = 0;
+        catAnim = GetComponent<Animator>();
     }
 
-    void CatJump()
+    void Update()
     {
-        if (jumpLimit == false)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2)
         {
-        if (Input.GetKeyDown(KeyCode.Space) || (Input.GetKeyDown(KeyCode.W)) || (Input.GetKeyDown(KeyCode.UpArrow)))
-        {
-            // 점프 = y축 방향으로 이동 X
-            // Impulse는 순간적으로 힘을 가하는 거고, Force는 계속해서 힘을 가하는 것이라고 함.
+            catAnim.SetTrigger("Jump");
+            catAnim.SetBool("isGround", false);
             catRb.AddForceY(jumpPower, ForceMode2D.Impulse);
-                jumpMax++;
-        }
-        }
+            jumpCount++; // 1씩 증가
 
+            soundManager.OnJumpSound();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            jumpMax = 0;
-            jumpLimit = false;
-            jumpPower = 8.0f;
-
+            catAnim.SetBool("isGround", true);
+            jumpCount = 0;
+            isGround = true;
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionExit2D(Collision2D other)
     {
-        if (jumpMax >= 2)
+        if (other.gameObject.CompareTag("Ground"))
         {
-            jumpLimit = true;
-            jumpPower = 8f;
-        } else if (jumpMax == 1)
-        {
-            jumpPower = 5f;
+            isGround = false;
         }
-            CatJump();
-
     }
 }
