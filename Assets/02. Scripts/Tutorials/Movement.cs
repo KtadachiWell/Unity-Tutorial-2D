@@ -4,55 +4,56 @@ public class Movement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
-    private void Update()
+    void Update()
     {
-        /// Input System (Old - Legacy)
-        /// ÀÔ·Â°ª¿¡ ´ëÇÑ ¾à¼ÓµÈ ½Ã½ºÅÛ
-        /// ÀÌµ¿ -> WASD, È­»ìÇ¥Å°º¸µå
-        /// Á¡ÇÁ -> Space
-        /// ÃÑ½î±â -> ¸¶¿ì½º ¿ŞÂÊ
+        // moveSpeed = Time.deltaTime;
+        // this.transform.position = transform.position = this.transform.position + Vector3.forward * moveSpeed;
+        // this.transform.position += Vector3.forward * moveSpeed * Time.deltaTime; // ìœ„ì—êº¼ì—ì„œ ê°„ì†Œí™”í•´ì„œ ë¸íƒ€íƒ€ì„ ë³´ì • ë“¤ì–´ê°„ ë²„ì „
 
-        // ºÎµå·´°Ô Áõ°¨ÇÏ´Â °ª
-        //float h = Input.GetAxis("Horizontal"); // wasd¶û È­»ìÇ¥Å° ¿òÁ÷ÀÓ µÑ´Ù ÀÛµ¿ÇÔ
-        //float v = Input.GetAxis("Vertical"); // À§¿Í µ¿ÀÏ
-
-        // µü ¶³¾îÁö´Â °ª
-        float h2 = Input.GetAxisRaw("Horizontal");
-        float v2 = Input.GetAxisRaw("Vertical");
-
-        Vector3 dir = new Vector3(h2, 0, v2); // ÀÌ·¸°ÔÇÏ¸é ´ë°¢¼±À¸·Î ÀÌµ¿ÇÒ ¶§ 1,0,1 °ªÀÌ µé¾î°¡¼­ ´õ ºü¸£°Ô ÀÌµ¿ÇÏ°Ô ‰Î.
-
-        Vector3 normalDir = dir.normalized; // À§ÀÇ °ª¿¡¼­ Á¤±ÔÈ­ °úÁ¤À» °¡Áö°Ô‰Î. ( 0 ~ 1 )
-        Debug.Log($"ÇöÀç ÀÔ·Â : {normalDir}");
-
-        transform.position += normalDir * moveSpeed * Time.deltaTime;
-
-        transform.LookAt(transform.position + normalDir);
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.position += Vector3.back * moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+        }
     }
 }
 
-    // Update is called once per frame
-//    void Update()
-//    {
-//        // moveSpeed = Time.deltaTime;
-//        // this.transform.position = transform.position = this.transform.position + Vector3.forward * moveSpeed;
-//        // this.transform.position += Vector3.forward * moveSpeed * Time.deltaTime; // À§¿¡²¨¿¡¼­ °£¼ÒÈ­ÇØ¼­ µ¨Å¸Å¸ÀÓ º¸Á¤ µé¾î°£ ¹öÀü
-        
-//        if (Input.GetKey(KeyCode.W))
-//        {
-//            transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
-//        }
-//        if (Input.GetKey(KeyCode.A))
-//        {
-//            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-//        }
-//        if (Input.GetKey(KeyCode.S))
-//        {
-//            transform.position += Vector3.back * moveSpeed * Time.deltaTime;
-//        }
-//        if (Input.GetKey(KeyCode.D))
-//        {
-//            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
-//        }
-//    }
+    //private void Update()
+    //{
+    //    /// Input System (Old - Legacy)
+    //    /// ì…ë ¥ê°’ì— ëŒ€í•œ ì•½ì†ëœ ì‹œìŠ¤í…œ
+    //    /// ì´ë™ -> WASD, í™”ì‚´í‘œí‚¤ë³´ë“œ
+    //    /// ì í”„ -> Space
+    //    /// ì´ì˜ê¸° -> ë§ˆìš°ìŠ¤ ì™¼ìª½
+
+    //    // ë¶€ë“œëŸ½ê²Œ ì¦ê°í•˜ëŠ” ê°’
+    //    //float h = Input.GetAxis("Horizontal"); // wasdë‘ í™”ì‚´í‘œí‚¤ ì›€ì§ì„ ë‘˜ë‹¤ ì‘ë™í•¨
+    //    //float v = Input.GetAxis("Vertical"); // ìœ„ì™€ ë™ì¼
+
+    //    // ë”± ë–¨ì–´ì§€ëŠ” ê°’
+    //    float h2 = Input.GetAxisRaw("Horizontal");
+    //    float v2 = Input.GetAxisRaw("Vertical");
+
+    //    Vector3 dir = new Vector3(h2, 0, v2); // ì´ë ‡ê²Œí•˜ë©´ ëŒ€ê°ì„ ìœ¼ë¡œ ì´ë™í•  ë•Œ 1,0,1 ê°’ì´ ë“¤ì–´ê°€ì„œ ë” ë¹ ë¥´ê²Œ ì´ë™í•˜ê²Œ ëŒ.
+
+    //    Vector3 normalDir = dir.normalized; // ìœ„ì˜ ê°’ì—ì„œ ì •ê·œí™” ê³¼ì •ì„ ê°€ì§€ê²ŒëŒ. ( 0 ~ 1 )
+    //    Debug.Log($"í˜„ì¬ ì…ë ¥ : {normalDir}");
+
+    //    transform.position += normalDir * moveSpeed * Time.deltaTime;
+
+    //    transform.LookAt(transform.position + normalDir);
+    //}
 //}
+
+

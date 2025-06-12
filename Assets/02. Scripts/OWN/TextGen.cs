@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+using UnityEngine;
+using TMPro;
 
-public class TextGen : MonoBehaviour
+namespace OWNproject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class TextGen : MonoBehaviour
     {
-        
+        public TextMeshPro tmpText;
+
+        private void OnEnable()
+        {
+            
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
