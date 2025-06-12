@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OWNproject
 {
@@ -21,7 +21,7 @@ namespace OWNproject
             // 경계 제한
             desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX); 
             desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
-            desiredPosition.z = -10; // Z축은 고정
+            desiredPosition.z = -10; // Z축 고정
 
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
             transform.position = smoothedPosition;
