@@ -15,6 +15,7 @@ namespace OWNproject
         // Components
         private Rigidbody2D rb;
         private Animator animator;
+        public SpriteRenderer[] spriteRenderer;
 
         // Input
         private float horizontalInput;
@@ -28,7 +29,9 @@ namespace OWNproject
 
         private void Start()
         {
-
+            rb = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
+            spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
         }
 
         private void Update()
@@ -38,7 +41,7 @@ namespace OWNproject
 
         private void FixedUpdate()
         {
-            
+            HandleMovement();
         }
 
         void HandleInput()
@@ -46,16 +49,21 @@ namespace OWNproject
             // WASD 및 방향키 이동 (A D, 방향키)
             horizontalInput = 0f;
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 horizontalInput -= 1f;
-            }else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) { horizontalInput += 1f; }
+            }else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) { horizontalInput += 1f; }
 
             // 점프
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetKey(KeyCode.Space) && isGrounded)
             {
                 
             }
+        }
+
+        void HandleMovement()
+        {
+            rb.linearVelocityX = horizontalInput * moveSpeed;
         }
     }
 
