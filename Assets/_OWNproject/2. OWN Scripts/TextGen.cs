@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
-namespace OWNproject
+namespace OWNproject.UI
 {
     public class TextGen : MonoBehaviour
     {
